@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    
+    <!-- audiorecord -->
+    <color name="zandroid_audiorecord_weight_bar_buttonup">#A4A9AE</color>
+    <color name="zandroid_audiorecord_weight_bar_buttondown">#63A3D7</color>
+    
+    <!-- loadingdialog -->
+    <color name="zandroid_loadingdialog_full_transparent">#00000000</color>
+    
+</resources>

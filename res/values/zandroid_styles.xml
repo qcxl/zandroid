@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- audiorecord -->
+    <style name="zandroid_audiorecord_largeCustomProgressBar" parent="@android:style/Widget.ProgressBar">
+        <item name="android:indeterminateDrawable">@drawable/zandroid_audiorecord_custom_loading</item>
+    </style>
+    
+    <!-- loadingdialog -->
+    <style name="zandroid_loadingdialog_Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/zandroid_loadingdialog_full_transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowContentOverlay">@null</item> 
+        <item name="android:background">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    
+</resources>
