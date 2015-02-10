@@ -4,6 +4,7 @@
 	
 	https://github.com/wyouflf/xUtils
 	Version:2.6.14
+	Document:http://xutilsapi.oschina.mopaas.com/
 	
 	>>ViewUtils
 		ViewUtils.inject(this);
