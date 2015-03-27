@@ -27,6 +27,13 @@ public class UtilDate {
 			return new SimpleDateFormat("yyyy-MM-dd");
 		}
 	};
+	
+	public static final ThreadLocal<SimpleDateFormat> SDF_TIME = new ThreadLocal<SimpleDateFormat>() {
+		@Override
+		protected SimpleDateFormat initialValue() {
+			return new SimpleDateFormat("HH:mm:ss");
+		}
+	};
 
 	/** Date 转 String(yyyy-MM-dd HH:mm:ss) */
 	public static String format(Date date) {
