@@ -114,6 +114,14 @@ public class UtilDate {
 		}
 		return ftime;
 	}
+	
+	/** 初始化一个Date类型的值 */
+	public static Date initDate(int year, int month, int date, int hourOfDay, int minute, int second) {
+		Calendar c = Calendar.getInstance();
+		c.clear();
+		c.set(year, month-1, date, hourOfDay, minute, second);
+		return c.getTime();
+	}
 
 	/**
 	 * 秒数转成00:00:00格式的字符串
