@@ -36,6 +36,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 
+/**
+ * 图片相关操作 <br>
+ * 		类型转换：Bitmap、ResourceId、Drawable、Bytes、FilePath、Uri <br>
+ * 		存储图片 <br>
+ * 		放大、缩小、压缩、缩略图、圆角、倒影、截图 <br>
+ * @author zouchongjin@sina.com
+ * @data 2015年4月2日
+ */
 public class UtilImage {
 
 	public static Bitmap getBitmapByResourceId(Context context, int id) {
@@ -74,9 +82,13 @@ public class UtilImage {
 
 	@SuppressWarnings("deprecation")
 	public static Drawable getDrawableByFilePath(String filePath) {
-		return new BitmapDrawable(getBitmapByFilePath(filePath, null));
+		return new BitmapDrawable(getBitmapByFilePath(filePath));
 	}
 
+	public static Bitmap getBitmapByFilePath(String filePath) {
+		return getBitmapByFilePath(filePath, null);
+	}
+	
 	public static Bitmap getBitmapByFilePath(String filePath, BitmapFactory.Options opts) {
 		FileInputStream fis = null;
 		Bitmap bitmap = null;
@@ -106,7 +118,7 @@ public class UtilImage {
 	 * 
 	 * @param bitmap
 	 * @param filePath
-	 *            包含文件名的完整路径
+	 *            包含文件名的完整物理路径
 	 * @return
 	 * @throws IOException
 	 */
@@ -170,74 +182,102 @@ public class UtilImage {
 		return filePath;
 	}
 
+	
+	private static Bitmap zoom(Bitmap bitmap, int oldWidth, int oldHeight, float widthScale, float heightScale) {
+		Matrix matrix = new Matrix();
+		matrix.postScale(widthScale, heightScale);
+		return Bitmap.createBitmap(bitmap, 0, 0, oldWidth, oldHeight, matrix, true);
+	}
+	
 	/**
-	 * 放大缩小图片
+	 * 根据最大值计算图片缩放后的宽高
 	 * 
-	 * @param bitmap
-	 *            原始图片
-	 * @param w
-	 *            宽度
-	 * @param h
-	 *            高度
-	 * @return 改变宽度和高度后的图片
+	 * @param img_size
+	 *            包含原始宽度和原始高度的数组
+	 * @param square_size
+	 *            最大宽度或高度
+	 * @return
 	 */
-	public static Bitmap zoomBitmap(Bitmap bitmap, int w, int h) {
-		Bitmap newbmp = null;
-		if (bitmap != null) {
-			int width = bitmap.getWidth();
-			int height = bitmap.getHeight();
-			Matrix matrix = new Matrix();
-			float scaleWidht = ((float) w / width);
-			float scaleHeight = ((float) h / height);
-			matrix.postScale(scaleWidht, scaleHeight);
-			newbmp = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+	private static int[] scaleImageSize(int[] img_size, int square_size) {
+		if (img_size[0] <= square_size && img_size[1] <= square_size)
+			return img_size;
+		double ratio = square_size / (double) Math.max(img_size[0], img_size[1]);
+		return new int[] { (int) (img_size[0] * ratio), (int) (img_size[1] * ratio) };
+	}
+	
+	/**
+	 * 放大缩小图片(未测试)
+	 * @param bitmap 原图。
+	 * @param maxWidth 最大宽度。如果为空，则根据maxHeight等比放大或缩小。
+	 * @param maxHeight 最大高度。如果未空，则根据maxWidth等比放大或缩小。
+	 * @param zoomIn 是否需要放大。
+	 * @return
+	 */
+	public static Bitmap zoomBitmap(Bitmap bitmap, Integer maxWidth, Integer maxHeight, boolean zoomIn) {
+		if (bitmap == null) {
+			return null;
 		}
-		return newbmp;
+		if (maxWidth == null && maxHeight == null) {
+			return bitmap;
+		}
+		
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		float scaleWidth = 1.0f;
+		float scaleHeight = 1.0f;
+		if (maxWidth != null && maxHeight != null) {
+			if (zoomIn || width > maxWidth) {
+				scaleWidth = maxWidth / (float) width;
+			}
+			if (zoomIn || height > maxHeight) {
+				scaleHeight = maxHeight / (float) height;
+			}
+		} else if (maxWidth != null) {
+			if (zoomIn || width > maxWidth) {
+				scaleWidth = scaleHeight = maxWidth / (float) width;
+			}
+		} else if (maxHeight != null) {
+			if (zoomIn || height > maxHeight) {			
+				scaleWidth = scaleHeight = maxHeight / (float) width;
+			}
+		}
+		return zoom(bitmap, width, height, scaleWidth, scaleHeight);
+	}
+	
+	/** 指定宽度和高度 放大缩小图片 */
+	@Deprecated
+	public static Bitmap zoomBitmap(Bitmap bitmap, int w, int h) {
+		return zoomBitmap(bitmap, w, h, true);
+	}
+	
+	/** 指定宽度等比例 放大缩小图片 */
+	@Deprecated
+	public static Bitmap zoomBitmapByWidth(Bitmap defaultBitmap, int targetWidth) {
+		return zoomBitmap(defaultBitmap, targetWidth, null, true);
 	}
 
-	/**
-	 * 放大缩小图片
-	 * 
-	 * @param filePath
-	 *            原始图片
-	 * @param w
-	 *            宽度
-	 * @param h
-	 *            高度
-	 * @return 改变宽度和高度后的图片
-	 */
+	/** 指定宽度和高度 放大缩小图片 */
+	@Deprecated
 	public static Bitmap zoomImage(String filePath, int w, int h) {
 		Bitmap bitmap = getBitmapByFilePath(filePath, null);
 		return UtilImage.zoomBitmap(bitmap, w, h);
 	}
 
-	/**
-	 * 压缩图片
-	 * 
-	 * @param filePath
-	 *            图片的文件路径
-	 * @param maxWidthOrHeight
-	 *            最大的宽度或高度
-	 * @return
-	 */
-	public static Bitmap zoomBitmap(String filePath, int maxWidthOrHeight) {
-		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inSampleSize = 1;
-		// 原始图片bitmap
-		Bitmap cur_bitmap = getBitmapByFilePath(filePath, opts);
-
-		if (cur_bitmap == null)
-			return null;
+	/** 指定最大宽度或高度 压缩图片 */
+	public static Bitmap zoomBitmap(String filePath, int maxWidthAndHeight) {
+		Bitmap cur_bitmap = getBitmapByFilePath(filePath);
 
 		// 原始图片的高宽
 		int[] cur_img_size = new int[] { cur_bitmap.getWidth(), cur_bitmap.getHeight() };
+		
 		// 计算原始图片缩放后的宽高
-		int[] new_img_size = scaleImageSize(cur_img_size, maxWidthOrHeight);
+		int[] new_img_size = scaleImageSize(cur_img_size, maxWidthAndHeight);
+		
 		return zoomBitmap(cur_bitmap, new_img_size[0], new_img_size[1]);
 	}
 
 	/**
-	 * 根据手机屏幕缩放图片，用于显示到手机上
+	 * 根据手机屏幕宽度缩放图片，用于显示到手机上
 	 * 
 	 * @param context
 	 * @param bitmap
@@ -245,20 +285,10 @@ public class UtilImage {
 	 */
 	public static Bitmap zoomBitMapForWindow(Activity context, Bitmap bitmap) {
 		int rWidth = UtilAndroid.getWindowWidth(context);
-		int width = bitmap.getWidth();
-		float zoomScale;
-		if (width >= rWidth)
-			zoomScale = ((float) rWidth) / width;
-		else
-			zoomScale = 1.0f;
-		// 创建操作图片用的matrix对象
-		Matrix matrix = new Matrix();
-		// 缩放图片动作
-		matrix.postScale(zoomScale, zoomScale);
-		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-		return resizedBitmap;
+		return zoomBitmap(bitmap, rWidth, null, false);
 	}
 
+	
 	/** 根据图片的路径获取图片的缩略图 */
 	public static Bitmap getThumbnail(Activity context, String filePath, int width, int height) {
 		Bitmap bitmap = null;
@@ -303,22 +333,6 @@ public class UtilImage {
 	@TargetApi(7)
 	private static Bitmap getThumbnail(ContentResolver cr, long origId, int kind, Options options) {
 		return MediaStore.Images.Thumbnails.getThumbnail(cr, origId, kind, options);
-	}
-
-	/**
-	 * 计算缩放图片的宽高
-	 * 
-	 * @param img_size
-	 *            包含宽度和高度的数组
-	 * @param square_size
-	 *            最大宽度或高度
-	 * @return
-	 */
-	public static int[] scaleImageSize(int[] img_size, int square_size) {
-		if (img_size[0] <= square_size && img_size[1] <= square_size)
-			return img_size;
-		double ratio = square_size / (double) Math.max(img_size[0], img_size[1]);
-		return new int[] { (int) (img_size[0] * ratio), (int) (img_size[1] * ratio) };
 	}
 
 	/**

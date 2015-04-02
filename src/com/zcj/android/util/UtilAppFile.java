@@ -22,7 +22,7 @@ import android.os.Environment;
 import android.os.StatFs;
 
 /**
- * File存储
+ * 手机文件操作：SD卡、应用文件、媒体库
  * 
  * @author ZCJ
  * @data 2013-11-14

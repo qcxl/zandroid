@@ -15,6 +15,11 @@ import android.provider.CallLog.Calls;
 import com.zcj.android.util.bean.CallRecordBean;
 import com.zcj.android.util.bean.ContactBean;
 
+/**
+ * 联系人、通话记录、通讯录 相关操作
+ * @author zouchongjin@sina.com
+ * @data 2015年4月2日
+ */
 public class UtilContacts {
 	
 	/**

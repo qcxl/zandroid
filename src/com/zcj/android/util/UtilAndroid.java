@@ -1,5 +1,6 @@
 package com.zcj.android.util;
 
+import java.util.List;
 import java.util.UUID;
 
 import android.annotation.SuppressLint;
@@ -10,6 +11,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
@@ -55,13 +57,14 @@ public class UtilAndroid {
 		return rWidth;
 	}
 
+	/** 获取屏幕宽度 */
 	@SuppressWarnings("deprecation")
 	public static int getWindowWidth(Context context) {
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		return wm.getDefaultDisplay().getWidth();
 	}
 
-	/** 获得屏幕高度 */
+	/** 获得屏幕宽度 */
 	public static int getScreenWidth(Context context) {
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		DisplayMetrics outMetrics = new DisplayMetrics();
@@ -69,7 +72,7 @@ public class UtilAndroid {
 		return outMetrics.widthPixels;
 	}
 
-	/** 获得屏幕宽度 */
+	/** 获得屏幕高度 */
 	public static int getScreenHeight(Context context) {
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		DisplayMetrics outMetrics = new DisplayMetrics();
@@ -123,6 +126,13 @@ public class UtilAndroid {
 			return false;
 		}
 		return true;
+	}
+	
+	/** 判断GPS是否打开（未测试） */
+	public static boolean isGpsEnabled(Context context) {
+		LocationManager locationManager = ((LocationManager) context.getSystemService(Context.LOCATION_SERVICE));
+		List<String> accessibleProviders = locationManager.getProviders(true);
+		return accessibleProviders != null && accessibleProviders.size() > 0;
 	}
 
 	/** 判断WIFI网络是否可用 */

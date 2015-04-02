@@ -12,6 +12,12 @@ import android.telephony.SmsManager;
 
 import com.zcj.android.util.bean.MessageBean;
 
+/**
+ * 手机短信 相关操作
+ * 
+ * @author zouchongjin@sina.com
+ * @data 2015年4月2日
+ */
 public class UtilMessage {
 
 	/**

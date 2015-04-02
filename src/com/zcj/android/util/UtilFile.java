@@ -13,6 +13,12 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+/**
+ * 文件(夹)操作：读取、新建、删除、重命名、存储、文件(夹)大小
+ * 
+ * @author zouchongjin@sina.com
+ * @data 2015年4月2日
+ */
 public class UtilFile {
 	
 	/** 列出目录下所有子目录,过滤掉以.开始的文件夹 */
@@ -259,6 +265,7 @@ public class UtilFile {
 	 * @return
 	 * @throws IOException
 	 */
+	@Deprecated
 	public static byte[] getImage(String imgUrl) throws IOException {
 		URL url = new URL(imgUrl);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -277,6 +284,7 @@ public class UtilFile {
 	 * @return
 	 * @throws IOException
 	 */
+	@Deprecated
 	public static Bitmap getImageBitmap(String imgUrl) throws IOException {
 		byte[] data = UtilFile.getImage(imgUrl);
 		Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
