@@ -2,8 +2,22 @@
 <resources>
 
     <!-- pulltorefreshbyhandmark -->
-    <item type="id" name="gridview"/>
-    <item type="id" name="webview" />
-    <item type="id" name="scrollview" />
+    <item name="gridview" type="id"/>
+    <item name="webview" type="id"/>
+    <item name="scrollview" type="id"/>
+
+    <!-- com.google.zxing -->
+    <item name="zandroid_zxing_auto_focus" type="id"/>
+    <item name="zandroid_zxing_decode" type="id"/>
+    <item name="zandroid_zxing_decode_failed" type="id"/>
+    <item name="zandroid_zxing_decode_succeeded" type="id"/>
+    <item name="zandroid_zxing_encode_failed" type="id"/>
+    <item name="zandroid_zxing_encode_succeeded" type="id"/>
+    <item name="zandroid_zxing_launch_product_query" type="id"/>
+    <item name="zandroid_zxing_quit" type="id"/>
+    <item name="zandroid_zxing_restart_preview" type="id"/>
+    <item name="zandroid_zxing_return_scan_result" type="id"/>
+    <item name="zandroid_zxing_search_book_contents_failed" type="id"/>
+    <item name="zandroid_zxing_search_book_contents_succeeded" type="id"/>
 
 </resources>

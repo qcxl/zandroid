@@ -234,5 +234,14 @@ Color.parseColor("#A4C639")
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
         android:smoothScrollbar="true"/>
-        
-        
+
+# com.google.zxing #        
+# https://github.com/zxing/zxing #
+# 二维码生成和识别 #
+	
+	com.google.zxing					core核心包(在原版的基础上修改了编码,详见com.google.zxing.qrcode.encoder.Encoder.java)
+	com.google.zxing.client.android		android客户端包(网络修改简化版,包含资源文件和Activity)
+	
+	
+	
+	
