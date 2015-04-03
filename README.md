@@ -242,6 +242,22 @@ Color.parseColor("#A4C639")
 	com.google.zxing					core核心包(在原版的基础上修改了编码,详见com.google.zxing.qrcode.encoder.Encoder.java)
 	com.google.zxing.client.android		android客户端包(网络修改简化版,包含资源文件和Activity)
 	
-	
+	Demo(详见AndroidHelp)
+		1、BarCodeTestActivity.java
+		2、layout_main.xml
+		3、Manifest.xml
+			<uses-permission android:name="android.permission.VIBRATE" />
+		    <uses-permission android:name="android.permission.CAMERA" />
+		    <uses-feature android:name="android.hardware.camera" />
+		    <uses-feature android:name="android.hardware.camera.autofocus" />
+		    
+		    <activity android:name="com.android.zouchongjin.demo.zxing.BarCodeTestActivity"></activity>
+	        <activity
+	            android:configChanges="orientation|keyboardHidden"
+	            android:name="com.google.zxing.client.android.activity.CaptureActivity"
+	            android:screenOrientation="portrait"
+	            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+	            android:windowSoftInputMode="stateAlwaysHidden" >
+	        </activity>
 	
 	
