@@ -24,7 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.zcj.android.R;
-import com.zcj.android.util.UtilBase;
+import com.zcj.util.filenameutils.FilenameUtils;
 
 public class DownloadUtils {
 
@@ -133,7 +133,7 @@ public class DownloadUtils {
 				if (!file.exists()) {
 					file.mkdir();
 				}
-				File apkFile = new File(savePath, UtilBase.filenameUtils_getName(downloadUrl));
+				File apkFile = new File(savePath, FilenameUtils.getName(downloadUrl));
 				FileOutputStream fos = new FileOutputStream(apkFile);
 				int count = 0;
 				byte buf[] = new byte[1024];
@@ -176,9 +176,9 @@ public class DownloadUtils {
 		};
 	};
 	private void afertDownload() {
-		String suff = UtilBase.filenameUtils_getExtension(downloadUrl).trim().toLowerCase();
+		String suff = FilenameUtils.getExtension(downloadUrl).trim().toLowerCase();
 		String type;
-		File f = new File(savePath, UtilBase.filenameUtils_getName(downloadUrl));
+		File f = new File(savePath, FilenameUtils.getName(downloadUrl));
 		if (!f.exists()) {
 			return;
 		}

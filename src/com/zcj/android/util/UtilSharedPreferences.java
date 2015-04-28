@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.zcj.util.UtilString;
+
 /**
  * 主要用于偏好参数设置
  * 		文件目录：/data/data/myPackageName/shared_prefs/myFileName.xml

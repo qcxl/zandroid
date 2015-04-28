@@ -1,7 +1,9 @@
-package com.zcj.android.util;
+package com.zcj.util;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.zcj.util.UtilString;
 
 public class UtilMedia {
 

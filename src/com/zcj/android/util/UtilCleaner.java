@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
+import com.zcj.util.UtilFile;
+
 /** 数据清除管理器 */
 public class UtilCleaner {
 	

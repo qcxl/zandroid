@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Map;
 
 import org.apache.http.util.EncodingUtils;
@@ -20,6 +22,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StatFs;
+
+import com.zcj.util.UtilFile;
+import com.zcj.util.UtilString;
 
 /**
  * 手机文件操作：SD卡、应用文件、媒体库
@@ -236,6 +241,39 @@ public class UtilAppFile {
 		Uri contentUri = Uri.fromFile(new File(filePath));
 		mediaScanIntent.setData(contentUri);
 		ctx.sendBroadcast(mediaScanIntent);
+	}
+	
+	/**
+	 * 获取网络图片的数据
+	 * @param imgUrl
+	 *            网络图片路径
+	 * @return
+	 * @throws IOException
+	 */
+	@Deprecated
+	public static byte[] getImage(String imgUrl) throws IOException {
+		URL url = new URL(imgUrl);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(6000);
+		conn.setRequestMethod("GET");
+		if (conn.getResponseCode() == 200) {
+			InputStream inStream = conn.getInputStream();
+			return UtilFile.toBytes(inStream);
+		}
+		return null;
+	}
+	
+	/**
+	 * 获取网络图片的数据
+	 * @param imgUrl 图片URL
+	 * @return
+	 * @throws IOException
+	 */
+	@Deprecated
+	public static Bitmap getImageBitmap(String imgUrl) throws IOException {
+		byte[] data = getImage(imgUrl);
+		Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+		return bitmap;
 	}
 
 }

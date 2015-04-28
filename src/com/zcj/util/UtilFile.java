@@ -1,4 +1,4 @@
-package com.zcj.android.util;
+package com.zcj.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -10,9 +10,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 /**
  * 文件(夹)操作：读取、新建、删除、重命名、存储、文件(夹)大小
  * 
@@ -20,7 +17,7 @@ import android.graphics.BitmapFactory;
  * @data 2015年4月2日
  */
 public class UtilFile {
-	
+
 	/** 列出目录下所有子目录,过滤掉以.开始的文件夹 */
 	public static List<String> listPath(String root) {
 		List<String> allDir = new ArrayList<String>();
@@ -36,10 +33,10 @@ public class UtilFile {
 		}
 		return allDir;
 	}
-	
+
 	/**
-	 * 创建目录
-	 * <br/>返回0代表失败，1代表成功，2代表已存在
+	 * 创建目录 <br/>
+	 * 返回0代表失败，1代表成功，2代表已存在
 	 */
 	public static int createPath(String newPath) {
 		File path = new File(newPath);
@@ -52,10 +49,10 @@ public class UtilFile {
 			return 0;
 		}
 	}
-	
+
 	/**
-	 * 删除空目录
-	 * <br/>返回 0代表成功 ,1 代表没有删除权限, 2代表不是空目录,3 代表未知错误
+	 * 删除空目录 <br/>
+	 * 返回 0代表成功 ,1 代表没有删除权限, 2代表不是空目录,3 代表未知错误
 	 */
 	public static int deleteBlankPath(String path) {
 		File f = new File(path);
@@ -70,7 +67,7 @@ public class UtilFile {
 		}
 		return 3;
 	}
-	
+
 	/**
 	 * 重命名
 	 * 
@@ -82,7 +79,7 @@ public class UtilFile {
 		File f = new File(oldPath);
 		return f.renameTo(new File(newPath));
 	}
-	
+
 	/**
 	 * 获取文件大小
 	 * 
@@ -97,7 +94,7 @@ public class UtilFile {
 		}
 		return size;
 	}
-	
+
 	/**
 	 * 获取文件大小
 	 * 
@@ -108,7 +105,7 @@ public class UtilFile {
 		long fileS = getFileSize(filePath);
 		return getFileSizeText(fileS);
 	}
-	
+
 	/**
 	 * 转换文件大小
 	 * 
@@ -129,7 +126,7 @@ public class UtilFile {
 		}
 		return fileSizeString;
 	}
-	
+
 	/**
 	 * 获取文件夹大小
 	 * 
@@ -228,11 +225,13 @@ public class UtilFile {
 		out.close();
 		return buffer;
 	}
-	
+
 	/**
 	 * 保存内容到指定的文件路径下
+	 * 
 	 * @param buffer
-	 * @param filePath 包含文件名的完整路径
+	 * @param filePath
+	 *            包含文件名的完整路径
 	 * @return
 	 */
 	public static boolean saveByByte(byte[] buffer, String filePath) {
@@ -257,38 +256,5 @@ public class UtilFile {
 		}
 		return writeSucc;
 	}
-	
-	/**
-	 * 获取网络图片的数据
-	 * @param imgUrl
-	 *            网络图片路径
-	 * @return
-	 * @throws IOException
-	 */
-	@Deprecated
-	public static byte[] getImage(String imgUrl) throws IOException {
-		URL url = new URL(imgUrl);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setConnectTimeout(6000);
-		conn.setRequestMethod("GET");
-		if (conn.getResponseCode() == 200) {
-			InputStream inStream = conn.getInputStream();
-			return toBytes(inStream);
-		}
-		return null;
-	}
-	
-	/**
-	 * 获取网络图片的数据
-	 * @param imgUrl 图片URL
-	 * @return
-	 * @throws IOException
-	 */
-	@Deprecated
-	public static Bitmap getImageBitmap(String imgUrl) throws IOException {
-		byte[] data = UtilFile.getImage(imgUrl);
-		Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-		return bitmap;
-	}
-	
+
 }

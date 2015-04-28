@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.zcj.android.R;
 import com.zcj.android.util.AudioRecordUtils;
-import com.zcj.android.util.UtilString;
+import com.zcj.util.UtilString;
 
 /**
  * 仿微信发语音功能

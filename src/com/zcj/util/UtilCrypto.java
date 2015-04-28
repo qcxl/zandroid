@@ -1,4 +1,4 @@
-package com.zcj.android.util;
+package com.zcj.util;
 
 import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;

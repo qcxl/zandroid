@@ -1,4 +1,4 @@
-package com.zcj.android.util.base;
+package com.zcj.util.filenameutils;
 
 import java.io.File;
 import java.util.ArrayList;

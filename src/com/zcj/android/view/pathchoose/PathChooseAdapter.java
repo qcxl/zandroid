@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zcj.android.R;
-import com.zcj.android.util.base.FilenameUtils;
+import com.zcj.util.filenameutils.FilenameUtils;
 
 /**
  * 路径选择弹出窗的内容列表适配器

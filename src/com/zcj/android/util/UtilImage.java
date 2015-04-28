@@ -36,6 +36,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 
+import com.zcj.util.UtilString;
+import com.zcj.util.filenameutils.FilenameUtils;
+
 /**
  * 图片相关操作 <br>
  * 		类型转换：Bitmap、ResourceId、Drawable、Bytes、FilePath、Uri <br>
@@ -293,7 +296,7 @@ public class UtilImage {
 	public static Bitmap getThumbnail(Activity context, String filePath, int width, int height) {
 		Bitmap bitmap = null;
 		if (UtilString.isNotBlank(filePath)) {
-			bitmap = loadImgThumbnail(context, UtilBase.filenameUtils_getName(filePath));
+			bitmap = loadImgThumbnail(context, FilenameUtils.getName(filePath));
 			if (bitmap == null) {
 				bitmap = getBitmapByFilePath(filePath, null);
 				bitmap = zoomBitmap(bitmap, width, height);

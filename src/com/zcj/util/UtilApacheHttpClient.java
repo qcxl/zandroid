@@ -1,4 +1,4 @@
-package com.zcj.android.util;
+package com.zcj.util;
 
 import java.io.IOException;
 import java.util.List;

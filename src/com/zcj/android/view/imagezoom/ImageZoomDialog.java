@@ -26,10 +26,9 @@ import android.widget.ViewSwitcher;
 
 import com.zcj.android.R;
 import com.zcj.android.util.UtilAppFile;
-import com.zcj.android.util.UtilFile;
 import com.zcj.android.util.UtilImage;
-import com.zcj.android.util.UtilString;
-import com.zcj.android.util.base.FilenameUtils;
+import com.zcj.util.UtilString;
+import com.zcj.util.filenameutils.FilenameUtils;
 
 /**
  * 图片缩放对话框
@@ -168,7 +167,7 @@ public class ImageZoomDialog extends Activity implements OnTouchListener,
 						}
 					}
 					if (bmp == null) {
-						bmp = UtilFile.getImageBitmap(imgURL);
+						bmp = UtilAppFile.getImageBitmap(imgURL);
 						if (bmp != null) {
 							try {
 								// 写图片缓存
