@@ -1,6 +1,5 @@
 package com.zcj.android.util;
 
-import java.util.List;
 import java.util.UUID;
 
 import android.annotation.SuppressLint;
@@ -127,12 +126,11 @@ public class UtilAndroid {
 		}
 		return true;
 	}
-	
-	/** 判断GPS是否打开（未测试） */
+
+	/** 判断GPS是否打开 */
 	public static boolean isGpsEnabled(Context context) {
-		LocationManager locationManager = ((LocationManager) context.getSystemService(Context.LOCATION_SERVICE));
-		List<String> accessibleProviders = locationManager.getProviders(true);
-		return accessibleProviders != null && accessibleProviders.size() > 0;
+		LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 	}
 
 	/** 判断WIFI网络是否可用 */

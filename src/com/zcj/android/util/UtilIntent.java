@@ -3,12 +3,14 @@ package com.zcj.android.util;
 import java.io.File;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Audio.Media;
+import android.provider.Settings;
 
 public class UtilIntent {
 
@@ -116,6 +118,22 @@ public class UtilIntent {
 		intent.setComponent(cm);
 		intent.setAction("android.intent.action.VIEW");
 		activity.startActivityForResult(intent, 0);
+	}
+
+	/** 打开GPS设置页面 */
+	public static void openGpsSetting(Context context) {
+		Intent intent = new Intent();
+		intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		try {
+			context.startActivity(intent);
+		} catch (ActivityNotFoundException ex) {
+			intent.setAction(Settings.ACTION_SETTINGS);
+			try {
+				context.startActivity(intent);
+			} catch (Exception e) {
+			}
+		}
 	}
 
 }
