@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -21,6 +22,18 @@ import android.util.TypedValue;
 import android.view.WindowManager;
 
 public class UtilAndroid {
+
+	/** 获取当前进程名 */
+	public static String getProcessName(Context context) {
+		int pid = android.os.Process.myPid();
+		ActivityManager mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		for (ActivityManager.RunningAppProcessInfo appProcess : mActivityManager.getRunningAppProcesses()) {
+			if (appProcess.pid == pid) {
+				return appProcess.processName;
+			}
+		}
+		return null;
+	}
 
 	/** 获取应用程序名称 */
 	public static String getAppName(Context context) {
