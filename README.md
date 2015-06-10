@@ -36,16 +36,8 @@
 
 	<activity android:name="com.zcj.android.view.imagezoom.ImageZoomDialog"></activity>
 	
-	// 初始化webview
-	UtilWebView.initWebView(this, mWebView, Environment.getExternalStorageDirectory()+ File.separator+ "TEST"+ File.separator);
-	
-	// 处理内容
-	String body = UtilHtml.webViewAddStyle(newsDetail.getContext());// 加入默认样式
-	body = UtilHtml.webViewImgHandle(body, true);// 处理图片
-	body = UtilHtml.webViewAddBottom(body);// 在内容最下方添加一个空白区域
-
-	// 设置内容
-	UtilWebView.showWebView(body, mWebView);
+	// 在指定的webView中显示指定的HTML内容，同时处理HTML的样式和支持图片的点击保存（主要用于显示文章内容）。
+	UtilWebView.showArticleWebView(this, mWebView, newsDetail.getContext(), Environment.getExternalStorageDirectory()+ File.separator+ "TEST"+ File.separator);
 	
 # 图片左右滑动 #
 # imageviewpager #

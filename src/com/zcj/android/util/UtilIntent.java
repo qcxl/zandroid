@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Audio.Media;
 import android.provider.Settings;
+import android.widget.Toast;
 
 public class UtilIntent {
 
@@ -59,9 +60,14 @@ public class UtilIntent {
 	 *            如：http://www.baidu.com
 	 */
 	public static void startWeb(Context context, String url) {
-		Uri uri = Uri.parse(url);
-		Intent it = new Intent(Intent.ACTION_VIEW, uri);
-		context.startActivity(it);
+		try {
+			Uri uri = Uri.parse(url);
+			Intent it = new Intent(Intent.ACTION_VIEW, uri);
+			context.startActivity(it);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Toast.makeText(context, "无法浏览此网页", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	/**
