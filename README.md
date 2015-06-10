@@ -39,10 +39,10 @@
 	// 在指定的webView中显示指定的HTML内容，同时处理HTML的样式和支持图片的点击保存（主要用于显示文章内容）。
 	UtilWebView.showArticleWebView(this, mWebView, newsDetail.getContext(), Environment.getExternalStorageDirectory()+ File.separator+ "TEST"+ File.separator);
 	
-# WebView壳
+# WebView壳 #
 # webviewshell #
 
-	详见palc项目。
+	详见palc项目或AndroidHelp。
 	
 # 图片左右滑动 #
 # imageviewpager #

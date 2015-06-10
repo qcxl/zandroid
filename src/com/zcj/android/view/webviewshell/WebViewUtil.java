@@ -7,13 +7,9 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnKeyListener;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Process;
 import android.view.KeyEvent;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -29,11 +25,8 @@ public class WebViewUtil {
 
 	public static final String JS_NAME = "Android";
 
-	Activity activity;
-	WebView myWebView;
-
-	private ValueCallback<Uri> mUploadMessage;
-	private final static int FILECHOOSER_RESULTCODE = 1;
+	private Activity activity;
+	private WebView myWebView;
 
 	public WebViewUtil(Activity activity, WebView myWebView) {
 		super();
@@ -68,25 +61,8 @@ public class WebViewUtil {
 		myWebView.loadUrl(indexUrl);
 	}
 
-	/** 退出程序 */
-	public void quit() {
-		activity.finish();// 退出当前Activity，进程还存在
-		Process.killProcess(Process.myPid());// 退出程序，进程也不存在，不推荐使用
-	}
-
-	/** 接收文件上传的返回 */
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		if (requestCode == FILECHOOSER_RESULTCODE) {
-			if (null == mUploadMessage)
-				return;
-			Uri result = intent == null || resultCode != Activity.RESULT_OK ? null : intent.getData();
-			mUploadMessage.onReceiveValue(result);
-			mUploadMessage = null;
-		}
-	}
-
 	/** 处理手机返回按钮 */
-	public Boolean onKeyDown(int keyCode, KeyEvent event) {
+	public Boolean onKeyDown(int keyCode, KeyEvent event, final OnQuitListener listener) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			if (myWebView.canGoBack()) {
 				myWebView.goBack();
@@ -98,7 +74,7 @@ public class WebViewUtil {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								dialog.cancel();
-								quit();
+								listener.webViewQuit();
 							}
 						}).setNegativeButton("返回", new DialogInterface.OnClickListener() {
 							@Override
@@ -121,27 +97,7 @@ public class WebViewUtil {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private class MyWebChromeClient extends WebChromeClient {
-
-		// For 3.0-
-		public void openFileChooser(ValueCallback<Uri> uploadMsg) {
-			mUploadMessage = uploadMsg;
-			Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-			i.addCategory(Intent.CATEGORY_OPENABLE);
-			i.setType("image/*");
-			activity.startActivityForResult(Intent.createChooser(i, "File Browser"), FILECHOOSER_RESULTCODE);
-		}
-
-		// For Android 3.0+
-		public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
-			openFileChooser(uploadMsg);
-		}
-
-		// For Android 4.1+
-		public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
-			openFileChooser(uploadMsg);
-		}
 
 		@Override
 		public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
