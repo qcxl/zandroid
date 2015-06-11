@@ -37,34 +37,36 @@ public class WebViewUtil {
 	/** 初始化 */
 	@SuppressLint("SetJavaScriptEnabled")
 	public void init(Object myJavascriptInterface, String indexUrl) {
-		// 支持JS
-		myWebView.getSettings().setJavaScriptEnabled(true);
+		if (myWebView != null) {
+			// 支持JS
+			myWebView.getSettings().setJavaScriptEnabled(true);
 
-		// 允许访问文件数据
-		myWebView.getSettings().setAllowFileAccess(true);
+			// 允许访问文件数据
+			myWebView.getSettings().setAllowFileAccess(true);
 
-		// 设置支持缩放
-		// myWebView.getSettings().setBuiltInZoomControls(true);
+			// 设置支持缩放
+			// myWebView.getSettings().setBuiltInZoomControls(true);
 
-		// 处理各种通知、请求事件(支持内部处理URL)
-		myWebView.setWebViewClient(new MyWebViewClient());
+			// 处理各种通知、请求事件(支持内部处理URL)
+			myWebView.setWebViewClient(new MyWebViewClient());
 
-		// 处理JS的对话框，网站图标，网站title，加载进度等
-		myWebView.setWebChromeClient(new MyWebChromeClient());
+			// 处理JS的对话框，网站图标，网站title，加载进度等
+			myWebView.setWebChromeClient(new MyWebChromeClient());
 
-		// 支持JS访问Android
-		if (myJavascriptInterface != null) {
-			myWebView.addJavascriptInterface(myJavascriptInterface, JS_NAME);
+			// 支持JS访问Android
+			if (myJavascriptInterface != null) {
+				myWebView.addJavascriptInterface(myJavascriptInterface, JS_NAME);
+			}
+
+			// 调用外链接
+			myWebView.loadUrl(indexUrl);
 		}
-
-		// 调用外链接
-		myWebView.loadUrl(indexUrl);
 	}
 
 	/** 处理手机返回按钮 */
 	public Boolean onKeyDown(int keyCode, KeyEvent event, final OnQuitListener listener) {
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			if (myWebView.canGoBack()) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (myWebView != null && myWebView.canGoBack()) {
 				myWebView.goBack();
 				return true;
 			} else {
