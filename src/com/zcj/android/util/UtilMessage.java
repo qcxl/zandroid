@@ -25,8 +25,9 @@ public class UtilMessage {
 	/**
 	 * 获取所有短信内容
 	 * <p>
-	 * 需要的权限： {@link android.Manifest.permission#READ_SMS
-	 * android.permission.READ_SMS}
+	 * 需要的权限：
+	 * <p>
+	 * {@link android.Manifest.permission#READ_SMS android.permission.READ_SMS}
 	 */
 	public static List<MessageBean> getAllMessages(Context context) {
 		List<MessageBean> list = new ArrayList<MessageBean>();
@@ -64,8 +65,9 @@ public class UtilMessage {
 	/**
 	 * 发送短信
 	 * <p>
-	 * 需要的权限： {@link android.Manifest.permission#WRITE_SMS
-	 * android.permission.WRITE_SMS}
+	 * 需要的权限： 
+	 * <p>
+	 * {@link android.Manifest.permission#WRITE_SMS android.permission.WRITE_SMS}
 	 * 
 	 * @param number
 	 *            手机号码：+8618271803015

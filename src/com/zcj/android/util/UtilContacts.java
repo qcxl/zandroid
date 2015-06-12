@@ -18,25 +18,25 @@ import com.zcj.util.UtilDate;
 
 /**
  * 联系人、通话记录、通讯录 相关操作
+ * 
  * @author zouchongjin@sina.com
  * @data 2015年4月2日
  */
 public class UtilContacts {
-	
+
 	/**
 	 * 获取通话记录列表
-	 * 		<uses-permission android:name="android.permission.READ_CALL_LOG"/>  
-	 * @param context
-	 * @return
+	 * <p>
+	 * 需要的权限：
+	 * <p>
+	 * {@link android.Manifest.permission#READ_CALL_LOG
+	 * android.permission.READ_CALL_LOG}
 	 */
 	public static List<CallRecordBean> getCallRecord(Context context) {
 		List<CallRecordBean> list = new ArrayList<CallRecordBean>();
 		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI,
-				new String[] { CallLog.Calls.NUMBER, CallLog.Calls.CACHED_NAME,
-						CallLog.Calls.TYPE, CallLog.Calls.DATE,
-						CallLog.Calls.DURATION }, null, null,
-				CallLog.Calls.DEFAULT_SORT_ORDER);
+		Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI, new String[] { CallLog.Calls.NUMBER, CallLog.Calls.CACHED_NAME,
+				CallLog.Calls.TYPE, CallLog.Calls.DATE, CallLog.Calls.DURATION }, null, null, CallLog.Calls.DEFAULT_SORT_ORDER);
 
 		while (cursor.moveToNext()) {
 			String strNumber = cursor.getString(cursor.getColumnIndex(Calls.NUMBER)); // 呼叫号码
@@ -54,21 +54,22 @@ public class UtilContacts {
 				callType = "未接";
 				break;
 			}
-			String durationTime = UtilDate.duration(cursor.getLong(cursor.getColumnIndex(Calls.DURATION)));
+			String durationTime = UtilDate.formatToHHmmss(cursor.getLong(cursor.getColumnIndex(Calls.DURATION)));
 			String time = UtilDate.format(new Date(Long.parseLong(cursor.getString(cursor.getColumnIndex(Calls.DATE)))));
-			
+
 			list.add(new CallRecordBean(strName, strNumber, time, callType, durationTime));
 		}
 		cursor.close();
 		return list;
 	}
-	
+
 	/**
 	 * 获取通讯录列表
-	 * 		<uses-permission android:name="android.permission.READ_CONTACTS" />
-	 * @param context
-	 * @return
-	 * @throws Exception
+	 * <p>
+	 * 需要的权限：
+	 * <p>
+	 * {@link android.Manifest.permission#READ_CONTACTS
+	 * android.permission.READ_CONTACTS}
 	 */
 	public static List<ContactBean> getContacts(Context context) {
 		List<ContactBean> contactsList = new ArrayList<ContactBean>();
@@ -103,11 +104,14 @@ public class UtilContacts {
 
 	/**
 	 * 添加联系人(同一事务)
-	 * 		<uses-permission android:name="android.permission.READ_CONTACTS" />
-	 * 		<uses-permission android:name="android.permission.WRITE_CONTACTS" />
-	 * @param context
-	 * @param contact
-	 * @return
+	 * <p>
+	 * 需要的权限：
+	 * <p>
+	 * {@link android.Manifest.permission#READ_CONTACTS
+	 * android.permission.READ_CONTACTS}
+	 * <p>
+	 * {@link android.Manifest.permission#WRITE_CONTACTS
+	 * android.permission.WRITE_CONTACTS}
 	 */
 	public static boolean addContacts(Context context, ContactBean contact) {
 		ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
@@ -117,13 +121,18 @@ public class UtilContacts {
 		operations.add(op1);
 
 		uri = Uri.parse("content://com.android.contacts/data");
-		ContentProviderOperation op2 = ContentProviderOperation.newInsert(uri).withValueBackReference("raw_contact_id", 0).withValue("mimetype", "vnd.android.cursor.item/name").withValue("data2", contact.getName()).build();
+		ContentProviderOperation op2 = ContentProviderOperation.newInsert(uri).withValueBackReference("raw_contact_id", 0)
+				.withValue("mimetype", "vnd.android.cursor.item/name").withValue("data2", contact.getName()).build();
 		operations.add(op2);
 
-		ContentProviderOperation op3 = ContentProviderOperation.newInsert(uri).withValueBackReference("raw_contact_id", 0).withValue("mimetype", "vnd.android.cursor.item/phone_v2").withValue("data1", contact.getPhone()).withValue("data2", "2").build();
+		ContentProviderOperation op3 = ContentProviderOperation.newInsert(uri).withValueBackReference("raw_contact_id", 0)
+				.withValue("mimetype", "vnd.android.cursor.item/phone_v2").withValue("data1", contact.getPhone()).withValue("data2", "2")
+				.build();
 		operations.add(op3);
 
-		ContentProviderOperation op4 = ContentProviderOperation.newInsert(uri).withValueBackReference("raw_contact_id", 0).withValue("mimetype", "vnd.android.cursor.item/email_v2").withValue("data1", contact.getEmail()).withValue("data2", "2").build();
+		ContentProviderOperation op4 = ContentProviderOperation.newInsert(uri).withValueBackReference("raw_contact_id", 0)
+				.withValue("mimetype", "vnd.android.cursor.item/email_v2").withValue("data1", contact.getEmail()).withValue("data2", "2")
+				.build();
 		operations.add(op4);
 
 		ContentResolver resolver = context.getContentResolver();
@@ -138,8 +147,11 @@ public class UtilContacts {
 
 	/**
 	 * 根据号码获取联系人的姓名
-	 * 		<uses-permission android:name="android.permission.READ_CONTACTS" />
-	 * @throws Exception
+	 * <p>
+	 * 需要的权限
+	 * <p>
+	 * {@link android.Manifest.permission#READ_CONTACTS
+	 * android.permission.READ_CONTACTS}
 	 */
 	public static String getContactNameByPhone(Context context, String phone) {
 		String name = null;
