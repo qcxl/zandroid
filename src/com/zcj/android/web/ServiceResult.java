@@ -9,9 +9,18 @@ public class ServiceResult {
 	private Object d;
 
 	private static final int S_SUCCESS = 1;// 成功标识
+	private static final int S_ERROR = 0;// 失败标识
 
 	public static final Gson GSON_D = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 	public static final Gson GSON_DT = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+
+	public ServiceResult() {
+	}
+
+	public ServiceResult(int s, Object d) {
+		this.s = s;
+		this.d = d;
+	}
 
 	/** 此返回结果是成功的 */
 	public boolean success() {
@@ -20,6 +29,14 @@ public class ServiceResult {
 		} else {
 			return false;
 		}
+	}
+
+	public static ServiceResult initSuccess(Object d) {
+		return new ServiceResult(S_SUCCESS, d);
+	}
+
+	public static ServiceResult initError(String d) {
+		return new ServiceResult(S_ERROR, d);
 	}
 
 	public int getS() {

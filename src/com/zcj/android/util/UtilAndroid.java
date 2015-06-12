@@ -6,8 +6,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -177,7 +175,7 @@ public class UtilAndroid {
 	}
 
 	/**
-	 * 取得设备的唯一标识 DEVICE_ID -> ANDROID_ID -> Sim Serial Number -> MAC ->
+	 * 取得设备的唯一标识 DEVICE_ID(IMEI) -> ANDROID_ID -> Sim Serial Number -> MAC ->
 	 * UUID(SharedPreferences)
 	 * 
 	 * @param context
@@ -186,11 +184,8 @@ public class UtilAndroid {
 	@SuppressLint("DefaultLocale")
 	public static String getUdid(Context context, String xmlFileName, String xmlKey) {
 
-		// <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-		TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-		String imei = telephonyManager.getDeviceId();
-		if (imei != null && imei.length() >= 10 && !"358673013795895".equals(imei) && !"004999010640000".equals(imei)
-				&& !"00000000000000".equals(imei) && !"000000000000000".equals(imei)) {
+		String imei = getIMEI(context);
+		if (imei != null) {
 			return imei;
 		}
 
@@ -199,11 +194,63 @@ public class UtilAndroid {
 			return androidId;
 		}
 
+		TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 		String simSerialNumber = telephonyManager.getSimSerialNumber();
 		if (simSerialNumber != null && simSerialNumber.trim().length() > 0) {
 			return simSerialNumber;
 		}
 
+		String macAddress = getMacAddress(context);
+		if (macAddress != null) {
+			return macAddress;
+		}
+
+		String theValue = UtilSharedPreferences.get(context, xmlFileName, xmlKey);
+		if (theValue != null && theValue.trim().length() > 0) {
+			return theValue;
+		}
+
+		String defaultValue = UUID.randomUUID().toString().replaceAll("-", "");
+		boolean saveOk = UtilSharedPreferences.save(context, xmlFileName, xmlKey, defaultValue);
+		if (saveOk) {
+			return defaultValue;
+		}
+		return null;
+	}
+
+	/**
+	 * 获取IMEI(国际移动装备辨识码)，返回NULL表示获取失败
+	 * <p>
+	 * 需要的权限： {@link android.Manifest.permission#READ_PHONE_STATE
+	 * android.permission.READ_PHONE_STATE}
+	 */
+	public static String getIMEI(Context context) {
+		TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		String imei = telephonyManager.getDeviceId();
+		if (imei != null && imei.length() >= 10 && !"358673013795895".equals(imei) && !"004999010640000".equals(imei)
+				&& !"00000000000000".equals(imei) && !"000000000000000".equals(imei)) {
+			return imei;
+		}
+		return null;
+	}
+
+	/**
+	 * 获取IMSI(国际移动用户识别码)，返回NULL表示获取失败
+	 * <p>
+	 * 需要的权限： {@link android.Manifest.permission#READ_PHONE_STATE
+	 * android.permission.READ_PHONE_STATE}
+	 */
+	public static String getIMSI(Context context) {
+		TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		String imsi = telephonyManager.getSubscriberId();
+		if (imsi != null && imsi.length() > 0) {
+			return imsi;
+		}
+		return null;
+	}
+
+	/** 获取mac地址，返回NULL表示获取失败 */
+	public static String getMacAddress(Context context) {
 		try {
 			WifiManager wifimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 			String mac = wifimanager.getConnectionInfo().getMacAddress();
@@ -212,17 +259,22 @@ public class UtilAndroid {
 			}
 		} catch (Exception e) {
 		}
-
-		SharedPreferences sp = context.getSharedPreferences(xmlFileName, Context.MODE_PRIVATE);
-		String theValue = sp.getString(xmlKey, null);
-		if (theValue != null && theValue.trim().length() > 0) {
-			return theValue;
-		}
-
-		String defaultValue = UUID.randomUUID().toString().replaceAll("-", "");
-		Editor editor = sp.edit();
-		editor.putString(xmlKey, defaultValue);
-		editor.commit();
-		return defaultValue;
+		return null;
 	}
+
+	/** 获取SDK号 */
+	public static int getAndroidSdk() {
+		return android.os.Build.VERSION.SDK_INT;
+	}
+
+	/** 获取Android系统版本号 */
+	public static String getAndroidVersion() {
+		return android.os.Build.VERSION.RELEASE;
+	}
+
+	/** 获取手机型号 */
+	public static String getPhoneVersion() {
+		return android.os.Build.MODEL;
+	}
+
 }

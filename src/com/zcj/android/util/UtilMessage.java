@@ -24,15 +24,16 @@ public class UtilMessage {
 
 	/**
 	 * 获取所有短信内容
-	 * @param context
-	 * @return
+	 * <p>
+	 * 需要的权限： {@link android.Manifest.permission#READ_SMS
+	 * android.permission.READ_SMS}
 	 */
 	public static List<MessageBean> getAllMessages(Context context) {
 		List<MessageBean> list = new ArrayList<MessageBean>();
 		try {
-			Cursor cur = context.getContentResolver().query(Uri.parse("content://sms/"), 
+			Cursor cur = context.getContentResolver().query(Uri.parse("content://sms/"),
 					new String[] { "_id", "address", "person", "body", "date", "type" }, null, null, "date desc");
-			
+
 			while (cur.moveToNext()) {
 				String name = cur.getString(cur.getColumnIndex("person"));
 				String phoneNumber = cur.getString(cur.getColumnIndex("address"));
@@ -50,25 +51,34 @@ public class UtilMessage {
 					type = "草稿";
 				}
 
-				if (smsbody == null) {smsbody = "";}
+				if (smsbody == null) {
+					smsbody = "";
+				}
 				list.add(new MessageBean(name, phoneNumber, smsbody, date, type));
 			}
 		} catch (SQLiteException ex) {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * 发送短信
-	 * @param number 手机号码：+8618271803015
-	 * @param content 发送内容：如果内容过长，会自动分段发送
+	 * <p>
+	 * 需要的权限： {@link android.Manifest.permission#WRITE_SMS
+	 * android.permission.WRITE_SMS}
+	 * 
+	 * @param number
+	 *            手机号码：+8618271803015
+	 * @param content
+	 *            发送内容：如果内容过长，会自动分段发送
 	 * @return
 	 */
 	public static boolean sendMessage(String number, String content) {
-		if (UtilString.isBlank(number)) return false;
+		if (UtilString.isBlank(number))
+			return false;
 		SmsManager manager = SmsManager.getDefault();
 		ArrayList<String> texts = manager.divideMessage(content);
-		for(String text : texts){
+		for (String text : texts) {
 			manager.sendTextMessage(number, null, text, null, null);
 		}
 		return true;
