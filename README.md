@@ -22,10 +22,6 @@
 
 	DownloadUtils dh = new DownloadUtils(this, "http://gdown.baidu.com/data/wisegame/cbe0fb2ba1d1dc55/baidushurufa.apk", Environment.getExternalStorageDirectory() + "/download");
 	dh.checkUpdate(2, false);
-
-# pulltorefresh - 下拉上拉刷新 #
-	
-	详见：README/pulltorefresh/...
 	
 # webview&imagezoom - 文章内容页（图片点击打开可保存、网页链接可点击打开） #
 
@@ -55,7 +51,7 @@
 		public void onComplete(Bitmap bm) {}
 	});
 	
-# audiorecord - 录音功能 #	
+# audiorecord - 录音功能 #
 
 	<!-- 录音/键盘的切换按钮 -->
 	<ImageView
@@ -112,7 +108,7 @@
 	
 	loading.hide();
 	
-# circleimageview - 图片圆形显示&定义控件属性 #
+# circleimageview - 图片圆形显示 #
 	
 	<!-- Layout.xml -->
 	<?xml version="1.0" encoding="utf-8"?>
@@ -180,7 +176,7 @@
 	
 Color.parseColor("#A4C639")	
 	
-# numberprogressbar - 水平进度条 #	
+# numberprogressbar - 水平进度条 #
 	
 	numberProgressBar.incrementProgressBy(1);
 	numberProgressBar.setProgress(0);

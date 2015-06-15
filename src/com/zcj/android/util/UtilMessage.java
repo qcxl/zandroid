@@ -65,9 +65,10 @@ public class UtilMessage {
 	/**
 	 * 发送短信
 	 * <p>
-	 * 需要的权限： 
+	 * 需要的权限：
 	 * <p>
-	 * {@link android.Manifest.permission#WRITE_SMS android.permission.WRITE_SMS}
+	 * {@link android.Manifest.permission#WRITE_SMS
+	 * android.permission.WRITE_SMS}
 	 * 
 	 * @param number
 	 *            手机号码：+8618271803015
