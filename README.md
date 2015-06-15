@@ -1,6 +1,5 @@
 
-# 开源框架XUtils #
-# com.lidroid.xutils #
+# com.lidroid.xutils - 开源框架XUtils #
 	
 	https://github.com/wyouflf/xUtils
 	Version:2.6.14
@@ -15,37 +14,31 @@
 		BitmapUtils bitmapUtils = new BitmapUtils(context);
 		bitmapUtils.display(testImageView, "http://bbs.lidroid.com/static/image/common/logo.png");
 
-# 注册双击全屏 #
-# BaseActivity #
+# BaseActivity - 注册双击全屏 #
 	
 	onCreate方法中添加：startAllowFullScreen(mHeader);// 传入需要隐藏的组件
 
-# 下载/更新 #
-# download #
+# download - 下载&更新 #
 
 	DownloadUtils dh = new DownloadUtils(this, "http://gdown.baidu.com/data/wisegame/cbe0fb2ba1d1dc55/baidushurufa.apk", Environment.getExternalStorageDirectory() + "/download");
 	dh.checkUpdate(2, false);
 
-# 下拉上拉刷新 #
-# pulltorefresh #
+# pulltorefresh - 下拉上拉刷新 #
 	
 	详见：README/pulltorefresh/...
 	
-# 文章内容页：图片点击打开可保存、网页链接可点击打开 #
-# webview/imagezoom #
+# webview&imagezoom - 文章内容页（图片点击打开可保存、网页链接可点击打开） #
 
 	<activity android:name="com.zcj.android.view.imagezoom.ImageZoomDialog"></activity>
 	
 	// 在指定的webView中显示指定的HTML内容，同时处理HTML的样式和支持图片的点击保存（主要用于显示文章内容）。
 	UtilWebView.showArticleWebView(this, mWebView, newsDetail.getContext(), Environment.getExternalStorageDirectory()+ File.separator+ "TEST"+ File.separator);
 	
-# WebView壳 #
-# webviewshell #
+# webviewshell - WebView壳 #
 
 	详见palc项目或AndroidHelp。
 	
-# 图片左右滑动 #
-# imageviewpager #
+# imageviewpager - 图片左右滑动 #
 
 	android-support-v4.jar
 	
@@ -53,8 +46,7 @@
 	
 	new ImageViewPagerUtil(HouseNewDetailActivity.this, dataList);
 	
-# 截屏功能 #
-# screenshot #
+# screenshot - 截屏功能 #
 	
 	UtilScreenShot.saveScreenShot(this, savePath);// 直接保存截图
 	或
@@ -63,8 +55,7 @@
 		public void onComplete(Bitmap bm) {}
 	});
 	
-# 录音功能 #
-# audiorecord #	
+# audiorecord - 录音功能 #	
 
 	<!-- 录音/键盘的切换按钮 -->
 	<ImageView
@@ -103,8 +94,7 @@
 		ard.showOrHideRecareder(new View[]{});
 	}
 	
-# 路径选择弹出窗 #
-# pathchoose #
+# pathchoose - 路径选择弹出窗 #
 
 	UtilPathChoose.showFilePathDialog(Setting.this,new ChooseCompleteListener() {
 		public void onComplete(String finalPath) {
@@ -112,8 +102,7 @@
 		}
 	});
 	
-# 加载对话框组件 #
-# loadingdialog #
+# loadingdialog - 加载对话框组件#
 
 	private LoadingDialog loading;
 	
@@ -123,8 +112,7 @@
 	
 	loading.hide();
 	
-# 图片圆形显示/定义控件属性 #
-# circleimageview #
+# circleimageview - 图片圆形显示&定义控件属性 #
 	
 	<!-- Layout.xml -->
 	<?xml version="1.0" encoding="utf-8"?>
@@ -155,13 +143,11 @@
 	private CircleImageView headImage;
 	headImage.setImageBitmap(UtilImage.getBitmapByFilePath(cutAfterPath, null));// 修改图片
 	
-# 有圆角的图片 #
-# roundimageview #
+# roundimageview - 有圆角的图片 #
 
 	用com.zcj.android.view.roundimageview.RoundedImageView 替代 ImageView 即可。
 	
-# 未读红点 #
-# viewbadger #
+# viewbadger - 未读红点 #
 	
 	BadgeView badge = new BadgeView(this, myView);
 	badge.setText("1");
@@ -194,8 +180,7 @@
 	
 Color.parseColor("#A4C639")	
 	
-# 水平进度条 #
-# numberprogressbar #	
+# numberprogressbar - 水平进度条 #	
 	
 	numberProgressBar.incrementProgressBy(1);
 	numberProgressBar.setProgress(0);
@@ -214,9 +199,9 @@ Color.parseColor("#A4C639")
 		custom:progress_unreached_bar_height="9dp"
         custom:progress="20"/>
 	
-# pulltorefreshbyhandmark #
-# https://github.com/chrisbanes/Android-PullToRefresh #
-# 下拉刷新上拉加载 #
+# pulltorefreshbyhandmark - 下拉刷新上拉加载 #
+	
+	https://github.com/chrisbanes/Android-PullToRefresh
 
 	<com.zcj.android.view.pulltorefreshbyhandmark.PullToRefreshListView
         android:id="@+id/pull_refresh_list"
@@ -232,9 +217,9 @@ Color.parseColor("#A4C639")
         android:headerDividersEnabled="false"
         android:smoothScrollbar="true"/>
 
-# com.google.zxing #        
-# https://github.com/zxing/zxing #
-# 二维码生成和识别 #
+# com.google.zxing - 二维码生成和识别 #
+ 
+	https://github.com/zxing/zxing
 	
 	com.google.zxing					core核心包(在原版的基础上修改了编码,详见com.google.zxing.qrcode.encoder.Encoder.java)
 	com.google.zxing.client.android		android客户端包(网络修改简化版,包含资源文件和Activity)
