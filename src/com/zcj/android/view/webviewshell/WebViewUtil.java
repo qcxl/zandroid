@@ -62,8 +62,41 @@ public class WebViewUtil {
 			myWebView.loadUrl(indexUrl);
 		}
 	}
+	
+	/** 处理手机返回按钮（返回按钮调用JS的方法） */
+	public Boolean onKeyDown(int keyCode, KeyEvent event, final OnQuitListener listener, final String jsFunction) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (myWebView != null && myWebView.canGoBack()) {
+				myWebView.post(new Runnable() {
+					@Override
+					public void run() {
+						myWebView.loadUrl("javascript:"+jsFunction+"()");
+					}
+				});
+				return true;
+			} else {
+				// 弹出框
+				AlertDialog ad = new AlertDialog.Builder(activity).setMessage("确定退出吗")
+						.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.cancel();
+								listener.webViewQuit();
+							}
+						}).setNegativeButton("返回", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// 不做任何操作
+							}
+						}).create();
+				ad.show();
+				return false;
+			}
+		}
+		return null;
+	}
 
-	/** 处理手机返回按钮 */
+	/** 处理手机返回按钮（返回按钮调用webView的goBack方法） */
 	public Boolean onKeyDown(int keyCode, KeyEvent event, final OnQuitListener listener) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (myWebView != null && myWebView.canGoBack()) {
