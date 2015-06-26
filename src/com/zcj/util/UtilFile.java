@@ -5,10 +5,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import android.annotation.SuppressLint;
+import com.zcj.util.filenameutils.FilenameUtils;
 
 /**
  * 文件(夹)操作：读取、新建、删除、重命名、存储、文件(夹)大小
@@ -16,6 +18,7 @@ import java.util.List;
  * @author zouchongjin@sina.com
  * @data 2015年4月2日
  */
+@SuppressLint("DefaultLocale")
 public class UtilFile {
 
 	/** 列出目录下所有子目录,过滤掉以.开始的文件夹 */
@@ -257,4 +260,31 @@ public class UtilFile {
 		return writeSucc;
 	}
 
+	public static Map<String, String> MIMETYPE_MAP = new HashMap<String, String>();
+
+	static {
+		MIMETYPE_MAP.put("doc", "application/msword");
+		MIMETYPE_MAP.put("js", "application/x-javascript");
+		MIMETYPE_MAP.put("css", "text/css");
+		MIMETYPE_MAP.put("png", "image/png");
+		MIMETYPE_MAP.put("apk", "application/vnd.android.package-archive");
+	}
+
+	/**
+	 * 获取文件的MIME类型
+	 * @param filename
+	 * 			带后缀的文件名。支持：foo.txt、a/b/c.jpg等格式
+	 * @return
+	 */
+	public static String getMimeType(String filename) {
+		if (UtilString.isNotBlank(filename)) {
+			String ext = FilenameUtils.getExtension(filename);
+			if (UtilString.isNotBlank(ext)) {
+				ext = ext.toLowerCase();
+				return MIMETYPE_MAP.get(ext);
+			}
+		}
+		return null;
+	}
+	
 }

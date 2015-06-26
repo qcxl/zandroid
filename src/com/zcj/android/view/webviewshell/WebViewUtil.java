@@ -1,19 +1,29 @@
 package com.zcj.android.view.webviewshell;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnKeyListener;
+import android.os.Build;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+
+import com.zcj.util.UtilFile;
 
 /**
  * WebView壳
@@ -27,6 +37,14 @@ public class WebViewUtil {
 
 	private Activity activity;
 	private WebView myWebView;
+	private Map<String, String> staticFileMap;
+
+	public WebViewUtil(Activity activity, WebView myWebView, Map<String, String> staticFileMap) {
+		super();
+		this.activity = activity;
+		this.myWebView = myWebView;
+		this.staticFileMap = staticFileMap;
+	}
 
 	public WebViewUtil(Activity activity, WebView myWebView) {
 		super();
@@ -62,7 +80,7 @@ public class WebViewUtil {
 			myWebView.loadUrl(indexUrl);
 		}
 	}
-	
+
 	/** 处理手机返回按钮（返回按钮调用JS的方法） */
 	public Boolean onKeyDown(int keyCode, KeyEvent event, final OnQuitListener listener, final String jsFunction) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -70,7 +88,7 @@ public class WebViewUtil {
 				myWebView.post(new Runnable() {
 					@Override
 					public void run() {
-						myWebView.loadUrl("javascript:"+jsFunction+"()");
+						myWebView.loadUrl("javascript:" + jsFunction + "()");
 					}
 				});
 				return true;
@@ -130,6 +148,27 @@ public class WebViewUtil {
 			view.loadUrl(url);
 			return true;
 		}
+
+		@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+		@Override
+		public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+			WebResourceResponse response = null;
+			if (staticFileMap != null && staticFileMap.size() > 0) {
+				for (Map.Entry<String, String> entry : staticFileMap.entrySet()) {
+					if (url.contains(entry.getKey())) {
+						try {
+							InputStream localCopy = activity.getAssets().open(entry.getValue());
+							Log.v("WebView", url + "加载本地资源" + entry.getValue());
+							response = new WebResourceResponse(UtilFile.getMimeType(entry.getKey()), "UTF-8", localCopy);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			return response;
+		}
+
 	}
 
 	private class MyWebChromeClient extends WebChromeClient {
