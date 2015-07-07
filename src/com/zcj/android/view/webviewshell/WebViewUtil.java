@@ -82,6 +82,7 @@ public class WebViewUtil {
 	}
 
 	/** 处理手机返回按钮（返回按钮调用JS的方法） */
+	@Deprecated
 	public Boolean onKeyDown(int keyCode, KeyEvent event, final OnQuitListener listener, final String jsFunction) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (myWebView != null && myWebView.canGoBack()) {
